@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Optional;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -41,11 +40,9 @@ public class TipoReceitaRepositoryTest {
 	@Autowired
 	private TipoReceitaRepository repository;
 
-	private final Long ID_1 = 1L;
-	private final String DESCRICAO_1 = "Tipo de receita Teste 1";
-	private final String DESCRICAO_ATUALIZADA_1 = "Tipo de receita Teste 1 atualizada";
+	private final String DESCRICAO = "Tipo de receita Teste";
 
-	private final String DESCRICAO_2 = "Tipo de receita Teste 2";
+	private Long id = 0L;
 
 	@Test
 	@Order(1)
@@ -55,69 +52,39 @@ public class TipoReceitaRepositoryTest {
 
 	@Test
 	@Order(2)
-	public void testSave1() {
+	public void testSave() {
 		TipoReceitaEntity entity = new TipoReceitaEntity();
-		entity.setId(ID_1);
-		entity.setDescricao(DESCRICAO_1);
+		entity.setDescricao(DESCRICAO);
 
-		repository.save(entity);
+		entity = repository.save(entity);
 
 		assertNotNull(entity);
-		assertEquals(ID_1, entity.getId());
-		assertEquals(DESCRICAO_1, entity.getDescricao());
+		assertNotNull(entity.getId());
+		assertEquals(DESCRICAO, entity.getDescricao());
+
+		id = entity.getId();
 	}
 
 	@Test
 	@Order(3)
-	public void testSave2() {
-		TipoReceitaEntity entity = new TipoReceitaEntity();
-		entity.setDescricao(DESCRICAO_2);
-
-		repository.save(entity);
-
-		assertNotNull(entity);
-		assertNotNull(entity.getId());
-		assertEquals(DESCRICAO_2, entity.getDescricao());
-	}
-
-	@Test
-	@Order(4)
 	public void testFindById() {
-		Optional<TipoReceitaEntity> optional = repository.findById(ID_1);
+		Optional<TipoReceitaEntity> optional = repository.findById(id);
+
 		assertTrue(optional.isPresent());
 
 		TipoReceitaEntity entity = optional.get();
 
 		assertNotNull(entity);
-		assertEquals(ID_1, entity.getId());
-		assertEquals(DESCRICAO_1, entity.getDescricao());
+		assertNotNull(entity.getId());
+		assertEquals(DESCRICAO, entity.getDescricao());
 	}
 
 	@Test
-	@Order(5)
-	public void testUpdate() {
-		TipoReceitaEntity entity = new TipoReceitaEntity();
-		entity.setId(ID_1);
-		entity.setDescricao(DESCRICAO_ATUALIZADA_1);
-
-		repository.save(entity);
-
-		assertNotNull(entity);
-		assertEquals(ID_1, entity.getId());
-		assertEquals(DESCRICAO_ATUALIZADA_1, entity.getDescricao());
-	}
-
-	@Test
-	@Order(6)
+	@Order(4)
 	public void testDelete() {
-		repository.deleteById(ID_1);
-		Optional<TipoReceitaEntity> optional = repository.findById(ID_1);
+		repository.deleteById(id);
+		Optional<TipoReceitaEntity> optional = repository.findById(id);
 		assertTrue(optional.isEmpty());
-	}
-
-	@AfterAll
-	public void finish() {
-		repository.deleteAll();
 	}
 
 }

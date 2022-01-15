@@ -1,15 +1,12 @@
 package com.williamab.desafiopubfuture.repository.receita;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -56,13 +53,11 @@ public class ReceitaRepositoryTest {
 	private ReceitaRepository receitaRepository;
 
 	// Dados da conta
-	private final Long CONTA_ID = 1L;
 	private final String CONTA_INSTITUICAO_FINANCEIRA = "Instituição financeira Teste";
 	private final TipoConta CONTA_TIPO_CONTA = TipoConta.POUPANCA;
 	private final Double CONTA_SALDO = 123.45;
 
 	// Dados do tipo de receita
-	private final Long TIPO_RECEITA_ID = 1L;
 	private final String TIPO_RECEITA_DESCRICAO = "Tipo de receita Teste";
 
 	// Dados da receita
@@ -70,6 +65,8 @@ public class ReceitaRepositoryTest {
 	private final Date RECEITA_DATA_RECEBIMENTO = new Date();
 	private final Date RECEITA_DATA_RECEBIMENTO_ESPERADO = new Date();
 	private final String RECEITA_DESCRICAO = "Descrição da receita Teste";
+
+	private Long idReceita = 0L;
 
 	@Test
 	@Order(1)
@@ -85,21 +82,19 @@ public class ReceitaRepositoryTest {
 
 		// Cria uma conta para vincular na receita
 		ContaEntity conta = new ContaEntity();
-		conta.setId(CONTA_ID);
 		conta.setInstituicaoFinanceira(CONTA_INSTITUICAO_FINANCEIRA);
 		conta.setSaldo(CONTA_SALDO);
 		conta.setTipoConta(CONTA_TIPO_CONTA);
 
-		contaRepository.save(conta);
+		conta = contaRepository.save(conta);
 
 		assertNotNull(conta);
 
 		// Cria um tipo de receita para vincular na receita
 		TipoReceitaEntity tipoReceita = new TipoReceitaEntity();
-		tipoReceita.setId(TIPO_RECEITA_ID);
 		tipoReceita.setDescricao(TIPO_RECEITA_DESCRICAO);
 
-		tipoReceitaRepository.save(tipoReceita);
+		tipoReceita = tipoReceitaRepository.save(tipoReceita);
 
 		assertNotNull(tipoReceita);
 
@@ -112,7 +107,7 @@ public class ReceitaRepositoryTest {
 		receita.setConta(conta);
 		receita.setTipoReceita(tipoReceita);
 
-		receitaRepository.save(receita);
+		receita = receitaRepository.save(receita);
 
 		assertNotNull(receita);
 		assertNotNull(receita.getId());
@@ -124,51 +119,37 @@ public class ReceitaRepositoryTest {
 		assertEquals(RECEITA_DESCRICAO, receita.getDescricao());
 		assertEquals(conta.getId(), receita.getConta().getId());
 		assertEquals(tipoReceita.getId(), receita.getTipoReceita().getId());
+
+		idReceita = receita.getId();
 	}
 
 	@Test
 	@Order(3)
-	public void testFind() {
-		List<ReceitaEntity> receitas = receitaRepository.findAll();
+	public void testFindById() {
+		Optional<ReceitaEntity> optional = receitaRepository.findById(idReceita);
 
-		assertFalse(receitas.isEmpty());
-		assertEquals(1, receitas.size());
+		assertTrue(optional.isPresent());
 
-		ReceitaEntity receita = receitas.get(0);
+		ReceitaEntity entity = optional.get();
 
-		assertNotNull(receita);
-		assertNotNull(receita.getId());
-		assertNotNull(receita.getConta());
-		assertNotNull(receita.getTipoReceita());
-		assertNotNull(receita.getConta().getId());
-		assertNotNull(receita.getTipoReceita().getId());
-		assertEquals(RECEITA_VALOR, receita.getValor());
-		assertEquals(RECEITA_DATA_RECEBIMENTO, receita.getDataRecebimento());
-		assertEquals(RECEITA_DATA_RECEBIMENTO_ESPERADO, receita.getDataRecebimentoEsperado());
-		assertEquals(RECEITA_DESCRICAO, receita.getDescricao());
+		assertNotNull(entity);
+		assertNotNull(entity.getId());
+		assertNotNull(entity.getConta());
+		assertNotNull(entity.getTipoReceita());
+		assertNotNull(entity.getConta().getId());
+		assertNotNull(entity.getTipoReceita().getId());
+		assertEquals(RECEITA_VALOR, entity.getValor());
+		assertEquals(RECEITA_DATA_RECEBIMENTO, entity.getDataRecebimento());
+		assertEquals(RECEITA_DATA_RECEBIMENTO_ESPERADO, entity.getDataRecebimentoEsperado());
+		assertEquals(RECEITA_DESCRICAO, entity.getDescricao());
 	}
 
 	@Test
 	@Order(4)
 	public void testDelete() {
-		List<ReceitaEntity> receitas = receitaRepository.findAll();
-
-		assertFalse(receitas.isEmpty());
-		assertEquals(1, receitas.size());
-
-		ReceitaEntity receita = receitas.get(0);
-
-		receitaRepository.deleteById(receita.getId());
-
-		Optional<ReceitaEntity> optional = receitaRepository.findById(receita.getId());
+		receitaRepository.deleteById(idReceita);
+		Optional<ReceitaEntity> optional = receitaRepository.findById(idReceita);
 		assertTrue(optional.isEmpty());
-	}
-
-	@AfterAll
-	public void finish() {
-		receitaRepository.deleteAll();
-		tipoReceitaRepository.deleteAll();
-		contaRepository.deleteAll();
 	}
 
 }

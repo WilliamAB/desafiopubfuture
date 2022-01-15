@@ -2,12 +2,10 @@ package com.williamab.desafiopubfuture.repository.conta;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Optional;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -44,16 +42,11 @@ public class ContaRepositoryTest {
 	@Autowired
 	private ContaRepository repository;
 
-	// Dados para o testSave1
-	private final Long ID_1 = 1L;
-	private final String INSTITUICAO_FINANCEIRA_1 = "Instituição financeira Teste 1";
-	private final String INSTITUICAO_FINANCEIRA_ATUALIZADA_1 = "Instituição financeira Teste 1 atualizada";
-	private final Double SALDO_1 = 1234.56;
-	private final TipoConta TIPO_CONTA_1 = TipoConta.CONTA_CORRENTE;
+	private final String INSTITUICAO_FINANCEIRA = "Instituição financeira Teste 1";
+	private final Double SALDO = 1234.56;
+	private final TipoConta TIPO_CONTA = TipoConta.CONTA_CORRENTE;
 
-	// Dados para o testSave2
-	private final Double SALDO_2 = 0.0;
-	private final TipoConta TIPO_CONTA_2 = TipoConta.CARTEIRA;	
+	private Long id = 0L;
 
 	@Test
 	@Order(1)
@@ -63,78 +56,45 @@ public class ContaRepositoryTest {
 
 	@Test
 	@Order(2)
-	public void testSave1() {
+	public void testSave() {
 		ContaEntity entity = new ContaEntity();
-		entity.setId(ID_1);
-		entity.setInstituicaoFinanceira(INSTITUICAO_FINANCEIRA_1);
-		entity.setSaldo(SALDO_1);
-		entity.setTipoConta(TIPO_CONTA_1);
+		entity.setInstituicaoFinanceira(INSTITUICAO_FINANCEIRA);
+		entity.setSaldo(SALDO);
+		entity.setTipoConta(TIPO_CONTA);
 
-		repository.save(entity);
+		entity = repository.save(entity);
 
 		assertNotNull(entity);
-		assertEquals(ID_1, entity.getId());
-		assertEquals(INSTITUICAO_FINANCEIRA_1, entity.getInstituicaoFinanceira());
-		assertEquals(SALDO_1, entity.getSaldo());
-		assertEquals(TIPO_CONTA_1, entity.getTipoConta());
+		assertNotNull(entity.getId());
+		assertEquals(INSTITUICAO_FINANCEIRA, entity.getInstituicaoFinanceira());
+		assertEquals(SALDO, entity.getSaldo());
+		assertEquals(TIPO_CONTA, entity.getTipoConta());
+
+		id = entity.getId();
 	}
 
 	@Test
 	@Order(3)
-	public void testSave2() {
-		ContaEntity entity = new ContaEntity();
-		entity.setSaldo(SALDO_2);
-		entity.setTipoConta(TIPO_CONTA_2);
-
-		repository.save(entity);
-
-		assertNotNull(entity);
-		assertNotNull(entity.getId());
-		assertNull(entity.getInstituicaoFinanceira());
-		assertEquals(SALDO_1, entity.getSaldo());
-		assertEquals(TIPO_CONTA_1, entity.getTipoConta());
-	}
-
-	@Test
-	@Order(4)
 	public void testFindById() {
-		Optional<ContaEntity> optional = repository.findById(ID_1);
+		Optional<ContaEntity> optional = repository.findById(id);
+
 		assertTrue(optional.isPresent());
 
 		ContaEntity entity = optional.get();
 
 		assertNotNull(entity);
-		assertEquals(ID_1, entity.getId());
-		assertEquals(INSTITUICAO_FINANCEIRA_1, entity.getInstituicaoFinanceira());
-		assertEquals(SALDO_1, entity.getSaldo());
-		assertEquals(TIPO_CONTA_1, entity.getTipoConta());
+		assertNotNull(entity.getId());
+		assertEquals(INSTITUICAO_FINANCEIRA, entity.getInstituicaoFinanceira());
+		assertEquals(SALDO, entity.getSaldo());
+		assertEquals(TIPO_CONTA, entity.getTipoConta());
 	}
 
 	@Test
-	@Order(5)
-	public void testUpdate() {
-		ContaEntity entity = new ContaEntity();
-		entity.setId(ID_1);
-		entity.setInstituicaoFinanceira(INSTITUICAO_FINANCEIRA_ATUALIZADA_1);
-
-		repository.save(entity);
-
-		assertNotNull(entity);
-		assertEquals(ID_1, entity.getId());
-		assertEquals(INSTITUICAO_FINANCEIRA_ATUALIZADA_1, entity.getInstituicaoFinanceira());
-	}
-
-	@Test
-	@Order(6)
+	@Order(4)
 	public void testDelete() {
-		repository.deleteById(ID_1);
-		Optional<ContaEntity> optional = repository.findById(ID_1);
+		repository.deleteById(id);
+		Optional<ContaEntity> optional = repository.findById(id);
 		assertTrue(optional.isEmpty());
-	}
-
-	@AfterAll
-	public void finish() {
-		repository.deleteAll();
 	}
 
 }

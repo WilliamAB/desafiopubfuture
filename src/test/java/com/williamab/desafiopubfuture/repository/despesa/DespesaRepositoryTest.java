@@ -1,15 +1,12 @@
 package com.williamab.desafiopubfuture.repository.despesa;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -56,19 +53,19 @@ public class DespesaRepositoryTest {
 	private DespesaRepository despesaRepository;
 
 	// Dados da conta
-	private final Long CONTA_ID = 1L;
 	private final String CONTA_INSTITUICAO_FINANCEIRA = "Instituição financeira Teste";
 	private final TipoConta CONTA_TIPO_CONTA = TipoConta.POUPANCA;
 	private final Double CONTA_SALDO = 123.45;
 
 	// Dados do tipo de despesa
-	private final Long TIPO_DESPESA_ID = 1L;
 	private final String TIPO_DESPESA_DESCRICAO = "Tipo de despesa Teste";
 
 	// Dados da despesa
 	private final Double DESPESA_VALOR = 12.34;
 	private final Date DESPESA_DATA_PAGAMENTO = new Date();
 	private final Date DESPESA_DATA_PAGAMENTO_ESPERADO = new Date();
+
+	private Long idDespesa = 0L;
 
 	@Test
 	@Order(1)
@@ -84,21 +81,19 @@ public class DespesaRepositoryTest {
 
 		// Cria uma conta para vincular na despesa
 		ContaEntity conta = new ContaEntity();
-		conta.setId(CONTA_ID);
 		conta.setInstituicaoFinanceira(CONTA_INSTITUICAO_FINANCEIRA);
 		conta.setSaldo(CONTA_SALDO);
 		conta.setTipoConta(CONTA_TIPO_CONTA);
 
-		contaRepository.save(conta);
+		conta = contaRepository.save(conta);
 
 		assertNotNull(conta);
 
 		// Cria um tipo de despesa para vincular na despesa
 		TipoDespesaEntity tipoDespesa = new TipoDespesaEntity();
-		tipoDespesa.setId(TIPO_DESPESA_ID);
 		tipoDespesa.setDescricao(TIPO_DESPESA_DESCRICAO);
 
-		tipoDespesaRepository.save(tipoDespesa);
+		tipoDespesa = tipoDespesaRepository.save(tipoDespesa);
 
 		assertNotNull(tipoDespesa);
 
@@ -110,7 +105,7 @@ public class DespesaRepositoryTest {
 		despesa.setConta(conta);
 		despesa.setTipoDespesa(tipoDespesa);
 
-		despesaRepository.save(despesa);
+		despesa = despesaRepository.save(despesa);
 
 		assertNotNull(despesa);
 		assertNotNull(despesa.getId());
@@ -121,17 +116,18 @@ public class DespesaRepositoryTest {
 		assertEquals(DESPESA_DATA_PAGAMENTO_ESPERADO, despesa.getDataPagamentoEsperado());
 		assertEquals(conta.getId(), despesa.getConta().getId());
 		assertEquals(tipoDespesa.getId(), despesa.getTipoDespesa().getId());
+
+		idDespesa = despesa.getId();
 	}
 
 	@Test
 	@Order(3)
-	public void testFind() {
-		List<DespesaEntity> despesas = despesaRepository.findAll();
+	public void testFindById() {
+		Optional<DespesaEntity> optional = despesaRepository.findById(idDespesa);
 
-		assertFalse(despesas.isEmpty());
-		assertEquals(1, despesas.size());
+		assertTrue(optional.isPresent());
 
-		DespesaEntity despesa = despesas.get(0);
+		DespesaEntity despesa = optional.get();
 
 		assertNotNull(despesa);
 		assertNotNull(despesa.getId());
@@ -147,24 +143,9 @@ public class DespesaRepositoryTest {
 	@Test
 	@Order(4)
 	public void testDelete() {
-		List<DespesaEntity> despesas = despesaRepository.findAll();
-
-		assertFalse(despesas.isEmpty());
-		assertEquals(1, despesas.size());
-
-		DespesaEntity despesa = despesas.get(0);
-
-		despesaRepository.deleteById(despesa.getId());
-
-		Optional<DespesaEntity> optional = despesaRepository.findById(despesa.getId());
+		despesaRepository.deleteById(idDespesa);
+		Optional<DespesaEntity> optional = despesaRepository.findById(idDespesa);
 		assertTrue(optional.isEmpty());
-	}
-
-	@AfterAll
-	public void finish() {
-		despesaRepository.deleteAll();
-		tipoDespesaRepository.deleteAll();
-		contaRepository.deleteAll();
 	}
 
 }
