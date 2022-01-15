@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import com.williamab.desafiopubfuture.model.BasicEntity;
 
@@ -19,11 +18,9 @@ import com.williamab.desafiopubfuture.model.BasicEntity;
 @Table(name = "conta")
 public class ContaEntity extends BasicEntity {
 
-	@NotNull
 	@Column(name = "saldo", nullable = false, precision = 10, scale = 2)
 	private Double saldo;
 
-	@NotNull
 	@Enumerated(EnumType.STRING)
 	@Column(name = "tipo_conta", nullable = false)
 	private TipoConta tipoConta;

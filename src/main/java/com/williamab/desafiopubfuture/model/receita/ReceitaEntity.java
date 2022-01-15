@@ -8,8 +8,6 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import com.williamab.desafiopubfuture.model.BasicEntity;
 import com.williamab.desafiopubfuture.model.conta.ContaEntity;
@@ -24,27 +22,22 @@ import com.williamab.desafiopubfuture.model.conta.ContaEntity;
 @Table(name = "receita")
 public class ReceitaEntity extends BasicEntity {
 
-	@NotNull
 	@Column(name = "valor", nullable = false, precision = 10, scale = 2)
 	private Double valor;
 
-	@NotNull
 	@Column(name = "data_recebimento", nullable = false)
 	private Date dataRecebimento;
 
 	@Column(name = "data_recebimento_esperado", nullable = true)
 	private Date dataRecebimentoEsperado;
 
-	@NotBlank
 	@Column(name = "descricao", nullable = false)
 	private String descricao;
 
-	@NotNull
 	@JoinColumn(name = "conta_id", nullable = false)
 	@ManyToOne(fetch = FetchType.EAGER)
 	private ContaEntity conta;
 
-	@NotNull
 	@JoinColumn(name = "tipo_receita_id", nullable = false)
 	@ManyToOne(fetch = FetchType.EAGER)
 	private TipoReceitaEntity tipoReceita;

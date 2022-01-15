@@ -3,7 +3,6 @@ package com.williamab.desafiopubfuture.model.receita;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 
 import com.williamab.desafiopubfuture.model.BasicEntity;
 
@@ -17,7 +16,6 @@ import com.williamab.desafiopubfuture.model.BasicEntity;
 @Table(name = "tipo_receita")
 public class TipoReceitaEntity extends BasicEntity {
 
-	@NotBlank
 	@Column(name = "descricao", nullable = false)
 	private String descricao;
 
