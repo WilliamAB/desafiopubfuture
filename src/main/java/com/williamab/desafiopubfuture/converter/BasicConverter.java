@@ -9,7 +9,7 @@ import com.williamab.desafiopubfuture.model.BasicEntity;
  * @author William Alberto Bertoldi (william.bertoldi@gmail.com)
  *
  */
-public abstract class BasicConverter<E extends BasicEntity, D extends BasicDTO<D, E>> {
+public abstract class BasicConverter<E extends BasicEntity, D extends BasicDTO<D>> {
 
 	/**
 	 * Converte uma entidade em um DTO.

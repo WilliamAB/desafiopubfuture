@@ -7,9 +7,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 import com.williamab.desafiopubfuture.dto.model.BasicDTO;
-import com.williamab.desafiopubfuture.model.conta.ContaEntity;
-import com.williamab.desafiopubfuture.model.receita.ReceitaEntity;
-import com.williamab.desafiopubfuture.model.receita.TipoReceitaEntity;
 
 /**
  * Implementação do DTO (Data Transfer Object) de receita.
@@ -17,7 +14,7 @@ import com.williamab.desafiopubfuture.model.receita.TipoReceitaEntity;
  * @author William Alberto Bertoldi (william.bertoldi@gmail.com)
  *
  */
-public class ReceitaDTO extends BasicDTO<ReceitaDTO, ReceitaEntity> {
+public class ReceitaDTO extends BasicDTO<ReceitaDTO> {
 
 	@NotNull(message = "O valor deve ser informado!")
 	@Positive(message = "O valor deve ser maior que zero!")
@@ -38,20 +35,6 @@ public class ReceitaDTO extends BasicDTO<ReceitaDTO, ReceitaEntity> {
 	private Long tipoReceitaId;
 
 	public ReceitaDTO() {
-	}
-
-	public ReceitaDTO(Double valor, Date dataRecebimento, String descricao, Long contaId, Long tipoReceitaId) {
-		this(valor, dataRecebimento, null, descricao, contaId, tipoReceitaId);
-	}
-
-	public ReceitaDTO(Double valor, Date dataRecebimento, Date dataRecebimentoEsperado, String descricao, Long contaId,
-			Long tipoReceitaId) {
-		this.valor = valor;
-		this.dataRecebimento = dataRecebimento;
-		this.dataRecebimentoEsperado = dataRecebimentoEsperado;
-		this.descricao = descricao;
-		this.contaId = contaId;
-		this.tipoReceitaId = tipoReceitaId;
 	}
 
 	public Double getValor() {
@@ -100,25 +83,6 @@ public class ReceitaDTO extends BasicDTO<ReceitaDTO, ReceitaEntity> {
 
 	public void setTipoReceitaId(Long tipoReceitaId) {
 		this.tipoReceitaId = tipoReceitaId;
-	}
-
-	@Override
-	protected ReceitaEntity convertFields() {
-		ReceitaEntity entity = new ReceitaEntity();
-		entity.setValor(valor);
-		entity.setDataRecebimento(dataRecebimento);
-		entity.setDataRecebimentoEsperado(dataRecebimentoEsperado);
-		entity.setDescricao(descricao);
-
-		ContaEntity contaEntity = new ContaEntity();
-		contaEntity.setId(contaId);
-		entity.setConta(contaEntity);
-
-		TipoReceitaEntity tipoReceitaEntity = new TipoReceitaEntity();
-		tipoReceitaEntity.setId(tipoReceitaId);
-		entity.setTipoReceita(tipoReceitaEntity);
-
-		return entity;
 	}
 
 }

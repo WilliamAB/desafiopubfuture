@@ -4,8 +4,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import com.williamab.desafiopubfuture.dto.model.BasicDTO;
-import com.williamab.desafiopubfuture.model.conta.ContaEntity;
-import com.williamab.desafiopubfuture.model.conta.TipoConta;
 
 /**
  * Implementação do DTO (Data Transfer Object) de conta.
@@ -13,7 +11,7 @@ import com.williamab.desafiopubfuture.model.conta.TipoConta;
  * @author William Alberto Bertoldi (william.bertoldi@gmail.com)
  *
  */
-public class ContaDTO extends BasicDTO<ContaDTO, ContaEntity> {
+public class ContaDTO extends BasicDTO<ContaDTO> {
 
 	@NotNull(message = "O saldo deve ser informado!")
 	private Double saldo;
@@ -26,16 +24,6 @@ public class ContaDTO extends BasicDTO<ContaDTO, ContaEntity> {
 	private String instituicaoFinanceira;
 
 	public ContaDTO() {
-	}
-
-	public ContaDTO(String tipoConta, String instituicaoFinanceira) {
-		this(0.0, tipoConta, instituicaoFinanceira);
-	}
-
-	public ContaDTO(Double saldo, String tipoConta, String instituicaoFinanceira) {
-		this.saldo = saldo;
-		this.tipoConta = tipoConta;
-		this.instituicaoFinanceira = instituicaoFinanceira;
 	}
 
 	public Double getSaldo() {
@@ -60,15 +48,6 @@ public class ContaDTO extends BasicDTO<ContaDTO, ContaEntity> {
 
 	public void setInstituicaoFinanceira(String instituicaoFinanceira) {
 		this.instituicaoFinanceira = instituicaoFinanceira;
-	}
-
-	@Override
-	protected ContaEntity convertFields() {
-		ContaEntity entity = new ContaEntity();
-		entity.setSaldo(saldo);
-		entity.setTipoConta(TipoConta.valueOf(tipoConta));
-		entity.setInstituicaoFinanceira(instituicaoFinanceira);
-		return entity;
 	}
 
 }

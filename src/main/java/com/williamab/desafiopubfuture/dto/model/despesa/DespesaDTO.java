@@ -6,9 +6,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 import com.williamab.desafiopubfuture.dto.model.BasicDTO;
-import com.williamab.desafiopubfuture.model.conta.ContaEntity;
-import com.williamab.desafiopubfuture.model.despesa.DespesaEntity;
-import com.williamab.desafiopubfuture.model.despesa.TipoDespesaEntity;
 
 /**
  * Implementação do DTO (Data Transfer Object) de despesa.
@@ -16,7 +13,7 @@ import com.williamab.desafiopubfuture.model.despesa.TipoDespesaEntity;
  * @author William Alberto Bertoldi (william.bertoldi@gmail.com)
  *
  */
-public class DespesaDTO extends BasicDTO<DespesaDTO, DespesaEntity> {
+public class DespesaDTO extends BasicDTO<DespesaDTO> {
 
 	@NotNull(message = "O valor deve ser informado!")
 	@Positive(message = "O valor deve ser maior que zero!")
@@ -34,21 +31,6 @@ public class DespesaDTO extends BasicDTO<DespesaDTO, DespesaEntity> {
 	private Long contaId;
 
 	public DespesaDTO() {
-	}
-
-	public DespesaDTO(Double valor, Date dataPagamento, Long tipoDespesaId, Long contaId) {
-		this.valor = valor;
-		this.dataPagamento = dataPagamento;
-		this.tipoDespesaId = tipoDespesaId;
-		this.contaId = contaId;
-	}
-
-	public DespesaDTO(Double valor, Date dataPagamento, Date dataPagamentoEsperado, Long tipoDespesaId, Long contaId) {
-		this.valor = valor;
-		this.dataPagamento = dataPagamento;
-		this.dataPagamentoEsperado = dataPagamentoEsperado;
-		this.tipoDespesaId = tipoDespesaId;
-		this.contaId = contaId;
 	}
 
 	public Double getValor() {
@@ -89,24 +71,6 @@ public class DespesaDTO extends BasicDTO<DespesaDTO, DespesaEntity> {
 
 	public void setContaId(Long contaId) {
 		this.contaId = contaId;
-	}
-
-	@Override
-	protected DespesaEntity convertFields() {
-		DespesaEntity entity = new DespesaEntity();
-		entity.setValor(valor);
-		entity.setDataPagamento(dataPagamento);
-		entity.setDataPagamentoEsperado(dataPagamentoEsperado);
-
-		ContaEntity contaEntity = new ContaEntity();
-		contaEntity.setId(contaId);
-		entity.setConta(contaEntity);
-
-		TipoDespesaEntity tipoDespesaEntity = new TipoDespesaEntity();
-		tipoDespesaEntity.setId(tipoDespesaId);
-		entity.setTipoDespesa(tipoDespesaEntity);
-
-		return entity;
 	}
 
 }
