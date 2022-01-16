@@ -91,6 +91,13 @@ public class ContaRepositoryTest {
 
 	@Test
 	@Order(4)
+	public void testSumSaldoContas() {
+		Double saldoTotal = repository.sumSaldoContas();
+		assertTrue(saldoTotal >= SALDO);
+	}
+
+	@Test
+	@Order(5)
 	public void testDelete() {
 		repository.deleteById(id);
 		Optional<ContaEntity> optional = repository.findById(id);

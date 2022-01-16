@@ -1,8 +1,11 @@
 package com.williamab.desafiopubfuture.service.conta;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -19,6 +22,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import com.williamab.desafiopubfuture.exception.ContaNotFoundException;
 import com.williamab.desafiopubfuture.model.conta.ContaEntity;
 import com.williamab.desafiopubfuture.model.conta.TipoConta;
 
@@ -46,6 +50,12 @@ public class ContaServiceTest {
 
 	private Long id = 0L;
 
+	private final TipoConta CONTA_TRANSF_TIPO_CONTA = TipoConta.CARTEIRA;
+
+	private Long contaTransfId = 0L;
+
+	private final Double VALOR_TRANSFERENCIA = 100.00;
+
 	@Test
 	@Order(1)
 	public void testService() {
@@ -69,6 +79,16 @@ public class ContaServiceTest {
 		assertEquals(TIPO_CONTA, entity.getTipoConta());
 
 		id = entity.getId();
+
+		// Conta auxiliar para o teste de transferência de saldo
+		ContaEntity contaAux = new ContaEntity(CONTA_TRANSF_TIPO_CONTA, null);
+		contaAux = service.save(contaAux);
+		assertNotNull(contaAux);
+		assertNotNull(contaAux.getId());
+		assertEquals(0.0, contaAux.getSaldo());
+		assertEquals(CONTA_TRANSF_TIPO_CONTA, contaAux.getTipoConta());
+
+		contaTransfId = contaAux.getId();
 	}
 
 	@Test
@@ -85,6 +105,48 @@ public class ContaServiceTest {
 
 	@Test
 	@Order(4)
+	public void testSaldoTotal() {
+		Double saldoTotal = service.getSaldoTotal();
+		assertTrue(saldoTotal >= SALDO);
+	}
+
+	@Test
+	@Order(5)
+	public void testTransferirSaldoInvalido() {
+
+		// Conta de origem inválida
+		assertThrowsExactly(ContaNotFoundException.class, () -> service.transferirSaldo(1000L, id, 10.00));
+
+		// Conta de destino inválida
+		assertThrowsExactly(ContaNotFoundException.class, () -> service.transferirSaldo(id, 1000L, 10.00));
+
+		// Valor inválido
+		assertThrowsExactly(IllegalArgumentException.class, () -> service.transferirSaldo(id, contaTransfId, 0.00));
+
+		// Contas iguais
+		assertThrowsExactly(IllegalArgumentException.class, () -> service.transferirSaldo(id, id, 10.00));
+	}
+
+	@Test
+	@Order(6)
+	public void testTransferenciaSaldo() {
+		assertDoesNotThrow(() -> service.transferirSaldo(id, contaTransfId, VALOR_TRANSFERENCIA));
+
+		ContaEntity contaOrigem = service.findById(id);
+		ContaEntity contaDestino = service.findById(contaTransfId);
+
+		assertNotNull(contaOrigem);
+		assertNotNull(contaDestino);
+
+		final Double SALDO_CONTA_ORIGEM = SALDO - VALOR_TRANSFERENCIA;
+		final Double SALDO_CONTA_DESTINO = VALOR_TRANSFERENCIA;
+
+		assertEquals(SALDO_CONTA_ORIGEM, contaOrigem.getSaldo());
+		assertEquals(SALDO_CONTA_DESTINO, contaDestino.getSaldo());
+	}
+
+	@Test
+	@Order(7)
 	public void testDelete() {
 		service.deleteById(id);
 		ContaEntity conta = service.findById(id);
