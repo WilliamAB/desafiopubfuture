@@ -18,6 +18,11 @@ public abstract class BasicConverter<E extends BasicEntity, D extends BasicDTO<D
 	 * @return o DTO como resultado da conversão
 	 */
 	public D convertEntityToDTO(E entity) {
+
+		if (entity == null) {
+			return null;
+		}
+
 		D dto = createEmptyDTO();
 
 		dto.setId(entity.getId());
@@ -34,6 +39,11 @@ public abstract class BasicConverter<E extends BasicEntity, D extends BasicDTO<D
 	 * @return a entidade como resultado da conversão
 	 */
 	public E convertDTOToEntity(D dto) {
+
+		if (dto == null) {
+			return null;
+		}
+
 		E entity = createEmptyEntity();
 
 		entity.setId(dto.getId());
