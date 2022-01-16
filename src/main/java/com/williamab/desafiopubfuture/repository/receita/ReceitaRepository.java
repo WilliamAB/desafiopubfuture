@@ -37,12 +37,67 @@ public interface ReceitaRepository extends BasicRepository<ReceitaEntity> {
 	Page<ReceitaEntity> findByDataRecebimentoBetween(Date dataInicial, Date dataFinal, Pageable pageable);
 
 	/**
-	 * Busca as receitas filtrando o tipo de despesa.
+	 * Busca as receitas filtrando o tipo de receita.
 	 * 
 	 * @param tipoReceita o tipo da receita
 	 * @param pageable    as configurações da página de resultado
 	 * @return uma página com os resultados
 	 */
 	Page<ReceitaEntity> findByTipoReceita(TipoReceitaEntity tipoReceita, Pageable pageable);
+
+	/**
+	 * Busca as receitas filtrando a data de pagamento maior que a data inicial.
+	 * 
+	 * @param dataInicial a data inicial
+	 * @param pageable    as configurações da página de resultado
+	 * @return uma página com os resultados
+	 */
+	Page<ReceitaEntity> findByDataRecebimentoGreaterThanEqual(Date dataInicial, Pageable pageable);
+
+	/**
+	 * Busca as receitas filtrando a data de pagamento menor que a data final.
+	 * 
+	 * @param dataFinal a data final
+	 * @param pageable  as configurações da página de resultado
+	 * @return uma página com os resultados
+	 */
+	Page<ReceitaEntity> findByDataRecebimentoLessThanEqual(Date dataFinal, Pageable pageable);
+
+	/**
+	 * Busca as receitas filtrando o tipo de receita e a data de pagamento maior que
+	 * a data inicial.
+	 * 
+	 * @param tipoReceita o tipo de receita
+	 * @param dataInicial a data inicial
+	 * @param pageable    as configurações da página de resultado
+	 * @return uma página com os resultados
+	 */
+	Page<ReceitaEntity> findByTipoReceitaAndDataRecebimentoGreaterThanEqual(TipoReceitaEntity tipoReceita,
+			Date dataInicial, Pageable pageable);
+
+	/**
+	 * Busca as receitas filtrando o tipo de receita e a data de pagamento menor que
+	 * a data final.
+	 * 
+	 * @param tipoReceita o tipo de receita
+	 * @param dataFinal   a data final
+	 * @param pageable    as configurações da página de resultado
+	 * @return uma página com os resultados
+	 */
+	Page<ReceitaEntity> findByTipoReceitaAndDataRecebimentoLessThanEqual(TipoReceitaEntity tipoReceita, Date dataFinal,
+			Pageable pageable);
+
+	/**
+	 * Busca as receitas filtrando o tipo de receita e o período da data de
+	 * pagamento.
+	 * 
+	 * @param tipoReceita o tipo da receita
+	 * @param dataInicial a data inicial do período
+	 * @param dataFinal   a data final do período
+	 * @param pageable    as configurações da página de resultado
+	 * @return uma página com os resultados
+	 */
+	Page<ReceitaEntity> findByTipoReceitaAndDataRecebimentoBetween(TipoReceitaEntity tipoReceita, Date dataInicial,
+			Date dataFinal, Pageable pageable);
 
 }

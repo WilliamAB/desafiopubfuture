@@ -23,60 +23,16 @@ public interface DespesaService extends BasicService<DespesaEntity> {
 	Double getValorTotal();
 
 	/**
-	 * Busca as despesas filtrando a data de pagamento.
+	 * Busca as despesas utilizando filtros por data inicial, data final e tipo de
+	 * despesa.
 	 * 
-	 * @param dataInicial a data inicial do período
-	 * @param dataFinal   a data final do período
-	 * @return as despesas filtradas
-	 */
-	Page<DespesaEntity> findByDataPagamento(Date dataInicial, Date dataFinal);
-
-	/**
-	 * Busca as despesas filtrando a data de pagamento.
-	 * 
-	 * @param dataInicial a data inicial do período
-	 * @param dataFinal   a data final do período
-	 * @param page        a página do resultado
-	 * @return
-	 */
-	Page<DespesaEntity> findByDataPagamento(Date dataInicial, Date dataFinal, int page);
-
-	/**
-	 * Busca as despesas filtrando a data de pagamento.
-	 * 
-	 * @param dataInicial a data inicial do período
-	 * @param dataFinal   a data final do período
-	 * @param page        a página do resultado
-	 * @param limit       o limite de registros do resultado
-	 * @return as despesas filtradas
-	 */
-	Page<DespesaEntity> findByDataPagamento(Date dataInicial, Date dataFinal, int page, int limit);
-
-	/**
-	 * Busca as despesas filtrando o tipo de despesa.
-	 * 
-	 * @param tipoDespesaId o id do tipo de despesa
-	 * @return as despesas filtradas
-	 */
-	Page<DespesaEntity> findByTipoDespesa(Long tipoDespesaId);
-
-	/**
-	 * Busca as despesas filtrando o tipo de despesa.
-	 * 
-	 * @param tipoDespesaId o id do tipo de despesa
-	 * @param page          a página do resultado
-	 * @return as despesas filtradas
-	 */
-	Page<DespesaEntity> findByTipoDespesa(Long tipoDespesaId, int page);
-
-	/**
-	 * Busca as despesas filtrando o tipo de despesa.
-	 * 
-	 * @param tipoDespesaId o id do tipo de despesa
+	 * @param dataInicial   filtro por data inicial
+	 * @param dataFinal     filtro por data final
+	 * @param tipoDespesaId filtro por tipo de despesa
 	 * @param page          a página do resultado
 	 * @param limit         o limite de registros do resultado
 	 * @return as despesas filtradas
 	 */
-	Page<DespesaEntity> findByTipoDespesa(Long tipoDespesaId, int page, int limit);
+	Page<DespesaEntity> findWithFilter(Date dataInicial, Date dataFinal, Long tipoDespesaId, int page, int limit);
 
 }

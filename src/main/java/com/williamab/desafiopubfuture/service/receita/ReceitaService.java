@@ -23,60 +23,16 @@ public interface ReceitaService extends BasicService<ReceitaEntity> {
 	Double getValorTotal();
 
 	/**
-	 * Busca as receitas filtrando a data de pagamento.
+	 * Busca as receitas utilizando filtros por data inicial, data final e tipo de
+	 * receita.
 	 * 
-	 * @param dataInicial a data inicial do período
-	 * @param dataFinal   a data final do período
-	 * @return as receitas filtradas
-	 */
-	Page<ReceitaEntity> findByDataRecebimento(Date dataInicial, Date dataFinal);
-
-	/**
-	 * Busca as receitas filtrando a data de pagamento.
-	 * 
-	 * @param dataInicial a data inicial do período
-	 * @param dataFinal   a data final do período
-	 * @param page        a página do resultado
-	 * @return as receitas filtradas
-	 */
-	Page<ReceitaEntity> findByDataRecebimento(Date dataInicial, Date dataFinal, int page);
-
-	/**
-	 * Busca as receitas filtrando a data de pagamento.
-	 * 
-	 * @param dataInicial a data inicial do período
-	 * @param dataFinal   a data final do período
-	 * @param page        a página do resultado
-	 * @param limit       o limite de registros do resultado
-	 * @return as receitas filtradas
-	 */
-	Page<ReceitaEntity> findByDataRecebimento(Date dataInicial, Date dataFinal, int page, int limit);
-
-	/**
-	 * Busca as receitas filtrando o tipo de receita.
-	 * 
-	 * @param tipoReceitaId o id do tipo de receita
-	 * @return as receitas filtradas
-	 */
-	Page<ReceitaEntity> findByTipoReceita(Long tipoReceitaId);
-
-	/**
-	 * Busca as receitas filtrando o tipo de receita.
-	 * 
-	 * @param tipoReceitaId o id do tipo de receita
-	 * @param page          a página do resultado
-	 * @return as receitas filtradas
-	 */
-	Page<ReceitaEntity> findByTipoReceita(Long tipoReceitaId, int page);
-
-	/**
-	 * Busca as receitas filtrando o tipo de receita.
-	 * 
-	 * @param tipoReceitaId o id do tipo de receita
+	 * @param dataInicial   filtro por data inicial
+	 * @param dataFinal     filtro por data final
+	 * @param tipoDespesaId filtro por tipo de receita
 	 * @param page          a página do resultado
 	 * @param limit         o limite de registros do resultado
 	 * @return as receitas filtradas
 	 */
-	Page<ReceitaEntity> findByTipoReceita(Long tipoReceitaId, int page, int limit);
+	Page<ReceitaEntity> findWithFilter(Date dataInicial, Date dataFinal, Long tipoReceitaId, int page, int limit);
 
 }
