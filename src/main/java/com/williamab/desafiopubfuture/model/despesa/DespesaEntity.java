@@ -8,6 +8,10 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.williamab.desafiopubfuture.model.BasicEntity;
 import com.williamab.desafiopubfuture.model.conta.ContaEntity;
@@ -25,9 +29,13 @@ public class DespesaEntity extends BasicEntity {
 	@Column(name = "valor", nullable = false, precision = 10, scale = 2)
 	private Double valor;
 
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	@Column(name = "data_pagamento", nullable = false)
 	private Date dataPagamento;
 
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	@Column(name = "data_pagamento_esperado", nullable = true)
 	private Date dataPagamentoEsperado;
 
