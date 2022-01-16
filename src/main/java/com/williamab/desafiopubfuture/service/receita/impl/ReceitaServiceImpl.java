@@ -23,7 +23,8 @@ public class ReceitaServiceImpl extends BasicServiceImpl<ReceitaEntity, ReceitaR
 
 	@Override
 	public Double getValorTotal() {
-		return getRepository().sumValorReceitas();
+		Double valorTotal = getRepository().sumValorReceitas();
+		return valorTotal == null ? 0.0 : valorTotal;
 	}
 
 	@Override

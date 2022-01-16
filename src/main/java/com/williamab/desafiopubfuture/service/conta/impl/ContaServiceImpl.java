@@ -20,7 +20,8 @@ public class ContaServiceImpl extends BasicServiceImpl<ContaEntity, ContaReposit
 
 	@Override
 	public Double getSaldoTotal() {
-		return getRepository().sumSaldoContas();
+		Double saldoTotal = getRepository().sumSaldoContas();
+		return saldoTotal == null ? 0.0 : saldoTotal;
 	}
 
 	@Override
@@ -32,7 +33,7 @@ public class ContaServiceImpl extends BasicServiceImpl<ContaEntity, ContaReposit
 		}
 
 		if (idContaOrigem.equals(idContaDestino)) {
-			throw new IllegalArgumentException("Conta de destino não pode ser a mesma que a de destino!");
+			throw new IllegalArgumentException("Conta de destino não pode ser a mesma que a de origem!");
 		}
 
 		ContaEntity contaOrigem = findById(idContaOrigem);

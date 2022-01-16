@@ -16,7 +16,7 @@ public class ContaDTO extends BasicDTO<ContaDTO> {
 	@NotNull(message = "O saldo deve ser informado!")
 	private Double saldo;
 
-	@NotNull
+	@NotNull(message = "Tipo da conta deve ser informado!")
 	@Pattern(regexp = "^(CARTEIRA|CONTA_CORRENTE|POUPANCA)$",
 		message = "O tipo da conta deve ser um dos seguintes: CARTEIRA, CONTA_CORRENTE ou POUPANCA.")
 	private String tipoConta;

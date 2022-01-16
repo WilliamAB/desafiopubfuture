@@ -23,7 +23,8 @@ public class DespesaServiceImpl extends BasicServiceImpl<DespesaEntity, DespesaR
 
 	@Override
 	public Double getValorTotal() {
-		return getRepository().sumValorDespesas();
+		Double valorTotal = getRepository().sumValorDespesas();
+		return valorTotal == null ? 0.0 : valorTotal;
 	}
 
 	@Override
