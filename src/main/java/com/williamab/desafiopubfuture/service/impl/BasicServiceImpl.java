@@ -23,6 +23,10 @@ public abstract class BasicServiceImpl<E extends BasicEntity, R extends BasicRep
 	@Autowired
 	private R repository;
 
+	protected R getRepository() {
+		return repository;
+	}
+
 	@Override
 	public E save(E entity) {
 		return repository.save(entity);
