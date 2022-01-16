@@ -10,6 +10,7 @@ import com.williamab.desafiopubfuture.model.receita.TipoReceitaEntity;
 import com.williamab.desafiopubfuture.repository.receita.ReceitaRepository;
 import com.williamab.desafiopubfuture.service.impl.BasicServiceImpl;
 import com.williamab.desafiopubfuture.service.receita.ReceitaService;
+import com.williamab.desafiopubfuture.util.APIUtils;
 
 /**
  * Implementação de {@link ReceitaService}.
@@ -49,7 +50,7 @@ public class ReceitaServiceImpl extends BasicServiceImpl<ReceitaEntity, ReceitaR
 			throw new IllegalArgumentException("Data final deve ser maior que a data inicial!");
 		}
 
-		return getRepository().findByDataRecebimentoBetween(dataInicial, dataFinal, createPageable(page, limit));
+		return getRepository().findByDataRecebimentoBetween(dataInicial, dataFinal, APIUtils.createPageable(page, limit));
 	}
 
 	@Override
@@ -67,7 +68,7 @@ public class ReceitaServiceImpl extends BasicServiceImpl<ReceitaEntity, ReceitaR
 		TipoReceitaEntity tipoReceita = new TipoReceitaEntity();
 		tipoReceita.setId(tipoReceitaId);
 
-		return getRepository().findByTipoReceita(tipoReceita, createPageable(page, limit));
+		return getRepository().findByTipoReceita(tipoReceita, APIUtils.createPageable(page, limit));
 	}
 
 }

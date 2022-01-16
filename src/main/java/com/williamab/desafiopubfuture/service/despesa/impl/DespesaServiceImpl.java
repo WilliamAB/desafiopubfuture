@@ -10,6 +10,7 @@ import com.williamab.desafiopubfuture.model.despesa.TipoDespesaEntity;
 import com.williamab.desafiopubfuture.repository.despesa.DespesaRepository;
 import com.williamab.desafiopubfuture.service.despesa.DespesaService;
 import com.williamab.desafiopubfuture.service.impl.BasicServiceImpl;
+import com.williamab.desafiopubfuture.util.APIUtils;
 
 /**
  * Implementação de {@link DespesaService}.
@@ -49,7 +50,7 @@ public class DespesaServiceImpl extends BasicServiceImpl<DespesaEntity, DespesaR
 			throw new IllegalArgumentException("Data final deve ser maior que a data inicial!");
 		}
 
-		return getRepository().findByDataPagamentoBetween(dataInicial, dataFinal, createPageable(page, limit));
+		return getRepository().findByDataPagamentoBetween(dataInicial, dataFinal, APIUtils.createPageable(page, limit));
 	}
 
 	@Override
@@ -67,7 +68,7 @@ public class DespesaServiceImpl extends BasicServiceImpl<DespesaEntity, DespesaR
 		TipoDespesaEntity tipoDespesa = new TipoDespesaEntity();
 		tipoDespesa.setId(tipoDespesaId);
 
-		return getRepository().findByTipoDespesa(tipoDespesa, createPageable(page, limit));
+		return getRepository().findByTipoDespesa(tipoDespesa, APIUtils.createPageable(page, limit));
 	}
 
 }

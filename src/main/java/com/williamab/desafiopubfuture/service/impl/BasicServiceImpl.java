@@ -2,13 +2,11 @@ package com.williamab.desafiopubfuture.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
 import com.williamab.desafiopubfuture.model.BasicEntity;
 import com.williamab.desafiopubfuture.repository.BasicRepository;
 import com.williamab.desafiopubfuture.service.BasicService;
+import com.williamab.desafiopubfuture.util.APIUtils;
 
 /**
  * Implementação abstrata para {@link BasicService}.
@@ -44,52 +42,17 @@ public abstract class BasicServiceImpl<E extends BasicEntity, R extends BasicRep
 
 	@Override
 	public Page<E> findAll() {
-		return repository.findAll(createPageable(1));
+		return repository.findAll(APIUtils.createPageable(1));
 	}
 
 	@Override
 	public Page<E> findByPage(int page) {
-		return repository.findAll(createPageable(page));
+		return repository.findAll(APIUtils.createPageable(page));
 	}
 
 	@Override
 	public Page<E> findByPage(int page, int limit) {
-		return repository.findAll(createPageable(page, limit));
-	}
-
-	/**
-	 * Cria um {@link Pageable} a partir do número da página, com ordenação padrão
-	 * por id.
-	 * 
-	 * @param page o número da página
-	 * @return um {@link Pageable}
-	 */
-	protected Pageable createPageable(int page) {
-		return createPageable(page, 20);
-	}
-
-	/**
-	 * Cria um {@link Pageable} a partir do número da página e do limite de
-	 * registros, com ordenação padrão por id.
-	 * 
-	 * @param page  o número da página
-	 * @param limit o limite de registros
-	 * @return um {@link Pageable}
-	 */
-	protected Pageable createPageable(int page, int limit) {
-		if (page < 1) {
-			page = 1;
-		}
-
-		// A paginação começa em 0, por isso deve reduzir 1
-		page -= 1;
-
-		// O limite máximo de resultados por página deve ser 20
-		if (limit < 1 || limit > 20) {
-			limit = 20;
-		}
-
-		return PageRequest.of(page, limit, Sort.by("id"));
+		return repository.findAll(APIUtils.createPageable(page, limit));
 	}
 
 }
