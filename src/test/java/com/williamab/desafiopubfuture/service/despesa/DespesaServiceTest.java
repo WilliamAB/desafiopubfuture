@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Date;
@@ -151,6 +152,26 @@ public class DespesaServiceTest {
 
 	@Test
 	@Order(5)
+	public void testFindByDataPagamentoInvalido() {
+
+		Date dataInicial = new GregorianCalendar(2022, 0, 31).getTime();
+		Date dataFinal = new GregorianCalendar(2022, 0, 1).getTime();
+
+		// Data inicial inválida
+		assertThrowsExactly(IllegalArgumentException.class,
+				() -> despesaService.findByDataPagamento(null, dataFinal));
+
+		// Data final inválida
+		assertThrowsExactly(IllegalArgumentException.class,
+				() -> despesaService.findByDataPagamento(dataInicial, null));
+
+		// Data inicial maior que data final
+		assertThrowsExactly(IllegalArgumentException.class,
+				() -> despesaService.findByDataPagamento(dataInicial, dataFinal));
+	}
+
+	@Test
+	@Order(6)
 	public void testFindByDataPagamento() {
 		Date dataInicial = new GregorianCalendar(2022, 0, 1).getTime();
 		Date dataFinal = new GregorianCalendar(2022, 0, 31).getTime();
@@ -161,7 +182,7 @@ public class DespesaServiceTest {
 	}
 
 	@Test
-	@Order(6)
+	@Order(7)
 	public void testFindByTipoDespesa() {
 		Page<DespesaEntity> page = despesaService.findByTipoDespesa(tipoDespesaId);
 
@@ -169,7 +190,7 @@ public class DespesaServiceTest {
 	}
 
 	@Test
-	@Order(7)
+	@Order(8)
 	public void testDelete() {
 		despesaService.deleteById(idDespesa);
 		DespesaEntity entity = despesaService.findById(idDespesa);
