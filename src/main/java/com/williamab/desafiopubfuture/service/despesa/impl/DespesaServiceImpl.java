@@ -33,7 +33,7 @@ public class DespesaServiceImpl extends BasicServiceImpl<DespesaEntity, DespesaR
 
 	@Override
 	public Page<DespesaEntity> findByDataPagamento(Date dataInicial, Date dataFinal, int page) {
-		return findByDataPagamento(dataInicial, dataFinal, page, 20);
+		return findByDataPagamento(dataInicial, dataFinal, page, APIUtils.PAGE_MAX_LIMIT);
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class DespesaServiceImpl extends BasicServiceImpl<DespesaEntity, DespesaR
 
 	@Override
 	public Page<DespesaEntity> findByTipoDespesa(Long tipoDespesaId, int page) {
-		return findByTipoDespesa(tipoDespesaId, page, 20);
+		return findByTipoDespesa(tipoDespesaId, page, APIUtils.PAGE_MAX_LIMIT);
 	}
 
 	@Override

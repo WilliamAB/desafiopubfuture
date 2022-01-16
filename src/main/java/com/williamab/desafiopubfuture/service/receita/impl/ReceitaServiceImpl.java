@@ -33,7 +33,7 @@ public class ReceitaServiceImpl extends BasicServiceImpl<ReceitaEntity, ReceitaR
 
 	@Override
 	public Page<ReceitaEntity> findByDataRecebimento(Date dataInicial, Date dataFinal, int page) {
-		return findByDataRecebimento(dataInicial, dataFinal, page, 20);
+		return findByDataRecebimento(dataInicial, dataFinal, page, APIUtils.PAGE_MAX_LIMIT);
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class ReceitaServiceImpl extends BasicServiceImpl<ReceitaEntity, ReceitaR
 
 	@Override
 	public Page<ReceitaEntity> findByTipoReceita(Long tipoReceitaId, int page) {
-		return findByTipoReceita(tipoReceitaId, page, 20);
+		return findByTipoReceita(tipoReceitaId, page, APIUtils.PAGE_MAX_LIMIT);
 	}
 
 	@Override

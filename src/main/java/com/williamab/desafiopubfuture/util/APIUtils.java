@@ -13,6 +13,11 @@ import org.springframework.data.domain.Sort;
 public final class APIUtils {
 
 	/**
+	 * Define o limite máximo de resultados que uma página deve gerar.
+	 */
+	public static final int PAGE_MAX_LIMIT = 20;
+
+	/**
 	 * Cria um {@link Pageable} a partir do número da página, com ordenação padrão
 	 * por id.
 	 * 
@@ -20,7 +25,7 @@ public final class APIUtils {
 	 * @return um {@link Pageable}
 	 */
 	public static Pageable createPageable(int page) {
-		return createPageable(page, 20);
+		return createPageable(page, PAGE_MAX_LIMIT);
 	}
 
 	/**
@@ -40,8 +45,8 @@ public final class APIUtils {
 		page -= 1;
 
 		// O limite máximo de resultados por página deve ser 20
-		if (limit < 1 || limit > 20) {
-			limit = 20;
+		if (limit < 1 || limit > PAGE_MAX_LIMIT) {
+			limit = PAGE_MAX_LIMIT;
 		}
 
 		return PageRequest.of(page, limit, Sort.by("id"));
