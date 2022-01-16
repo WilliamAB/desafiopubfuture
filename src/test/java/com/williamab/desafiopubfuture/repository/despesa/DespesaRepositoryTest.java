@@ -1,10 +1,12 @@
 package com.williamab.desafiopubfuture.repository.despesa;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Optional;
 
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
@@ -16,6 +18,8 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -59,6 +63,8 @@ public class DespesaRepositoryTest {
 
 	// Dados do tipo de despesa
 	private final String TIPO_DESPESA_DESCRICAO = "Tipo de despesa Teste";
+
+	private Long tipoDespesaId = 0L;
 
 	// Dados da despesa
 	private final Double DESPESA_VALOR = 12.34;
@@ -118,6 +124,7 @@ public class DespesaRepositoryTest {
 		assertEquals(tipoDespesa.getId(), despesa.getTipoDespesa().getId());
 
 		idDespesa = despesa.getId();
+		tipoDespesaId = tipoDespesa.getId();
 	}
 
 	@Test
@@ -142,6 +149,38 @@ public class DespesaRepositoryTest {
 
 	@Test
 	@Order(4)
+	public void testSumValorDespesas() {
+		Double valorTotal = despesaRepository.sumValorDespesas();
+		assertTrue(valorTotal >= DESPESA_VALOR);
+	}
+
+	@Test
+	@Order(5)
+	public void testFindByDataPagamentoBetween() {
+		Date dataInicial = new GregorianCalendar(2022, 0, 1).getTime();
+		Date dataFinal = new GregorianCalendar(2022, 0, 31).getTime();
+		PageRequest pageable = PageRequest.of(0, 20);
+
+		Page<DespesaEntity> page = despesaRepository.findByDataPagamentoBetween(dataInicial, dataFinal, pageable);
+
+		assertFalse(page.isEmpty());
+	}
+
+	@Test
+	@Order(6)
+	public void testFindByTipoDespesa() {
+		PageRequest pageable = PageRequest.of(0, 20);
+
+		TipoDespesaEntity tipoDespesa = new TipoDespesaEntity();
+		tipoDespesa.setId(tipoDespesaId);
+
+		Page<DespesaEntity> page = despesaRepository.findByTipoDespesa(tipoDespesa, pageable);
+
+		assertFalse(page.isEmpty());
+	}
+
+	@Test
+	@Order(7)
 	public void testDelete() {
 		despesaRepository.deleteById(idDespesa);
 		Optional<DespesaEntity> optional = despesaRepository.findById(idDespesa);
