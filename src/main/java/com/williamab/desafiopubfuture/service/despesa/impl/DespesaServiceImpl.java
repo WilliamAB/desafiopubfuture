@@ -46,7 +46,7 @@ public class DespesaServiceImpl extends BasicServiceImpl<DespesaEntity, DespesaR
 		}
 
 		if (dataInicial.compareTo(dataFinal) > 0) {
-			throw new IllegalArgumentException("Data final deve ser menor que a data inicial!");
+			throw new IllegalArgumentException("Data final deve ser maior que a data inicial!");
 		}
 
 		return getRepository().findByDataPagamentoBetween(dataInicial, dataFinal, createPageable(page, limit));
