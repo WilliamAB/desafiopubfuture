@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -62,8 +63,8 @@ public class ReceitaServiceTest {
 
 	// Dados da receita
 	private final Double RECEITA_VALOR = 12.34;
-	private final Date RECEITA_DATA_RECEBIMENTO = new Date();
-	private final Date RECEITA_DATA_RECEBIMENTO_ESPERADO = new Date();
+	private final Date RECEITA_DATA_RECEBIMENTO = new GregorianCalendar(2022, 0, 1).getTime();
+	private final Date RECEITA_DATA_RECEBIMENTO_ESPERADO = new GregorianCalendar(2022, 0, 15).getTime();
 	private final String RECEITA_DESCRICAO = "Descrição da receita Teste Service";
 
 	private Long idReceita = 0L;

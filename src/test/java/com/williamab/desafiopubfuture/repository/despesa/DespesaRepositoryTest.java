@@ -68,8 +68,8 @@ public class DespesaRepositoryTest {
 
 	// Dados da despesa
 	private final Double DESPESA_VALOR = 12.34;
-	private final Date DESPESA_DATA_PAGAMENTO = new Date();
-	private final Date DESPESA_DATA_PAGAMENTO_ESPERADO = new Date();
+	private final Date DESPESA_DATA_PAGAMENTO = new GregorianCalendar(2022, 0, 1).getTime();
+	private final Date DESPESA_DATA_PAGAMENTO_ESPERADO = new GregorianCalendar(2022, 0, 15).getTime();
 
 	private Long idDespesa = 0L;
 

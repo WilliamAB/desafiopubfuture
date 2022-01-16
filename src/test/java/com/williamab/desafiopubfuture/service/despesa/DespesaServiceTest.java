@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -62,8 +63,8 @@ public class DespesaServiceTest {
 
 	// Dados da despesa
 	private final Double DESPESA_VALOR = 12.34;
-	private final Date DESPESA_DATA_PAGAMENTO = new Date();
-	private final Date DESPESA_DATA_PAGAMENTO_ESPERADO = new Date();
+	private final Date DESPESA_DATA_PAGAMENTO = new GregorianCalendar(2022, 0, 1).getTime();
+	private final Date DESPESA_DATA_PAGAMENTO_ESPERADO = new GregorianCalendar(2022, 0, 15).getTime();
 
 	private Long idDespesa = 0L;
 
