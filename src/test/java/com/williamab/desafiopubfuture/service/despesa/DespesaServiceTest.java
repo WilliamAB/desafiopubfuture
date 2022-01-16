@@ -1,14 +1,11 @@
 package com.williamab.desafiopubfuture.service.despesa;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -19,7 +16,6 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -63,8 +59,6 @@ public class DespesaServiceTest {
 
 	// Dados do tipo de despesa
 	private final String TIPO_DESPESA_DESCRICAO = "Tipo de despesa Teste Service";
-
-	private Long tipoDespesaId = 0L;
 
 	// Dados da despesa
 	private final Double DESPESA_VALOR = 12.34;
@@ -124,7 +118,6 @@ public class DespesaServiceTest {
 		assertEquals(tipoDespesa.getId(), despesa.getTipoDespesa().getId());
 
 		idDespesa = despesa.getId();
-		tipoDespesaId = tipoDespesa.getId();
 	}
 
 	@Test
@@ -152,45 +145,6 @@ public class DespesaServiceTest {
 
 	@Test
 	@Order(5)
-	public void testFindByDataPagamentoInvalido() {
-
-		Date dataInicial = new GregorianCalendar(2022, 0, 31).getTime();
-		Date dataFinal = new GregorianCalendar(2022, 0, 1).getTime();
-
-		// Data inicial inválida
-		assertThrowsExactly(IllegalArgumentException.class,
-				() -> despesaService.findByDataPagamento(null, dataFinal));
-
-		// Data final inválida
-		assertThrowsExactly(IllegalArgumentException.class,
-				() -> despesaService.findByDataPagamento(dataInicial, null));
-
-		// Data inicial maior que data final
-		assertThrowsExactly(IllegalArgumentException.class,
-				() -> despesaService.findByDataPagamento(dataInicial, dataFinal));
-	}
-
-	@Test
-	@Order(6)
-	public void testFindByDataPagamento() {
-		Date dataInicial = new GregorianCalendar(2022, 0, 1).getTime();
-		Date dataFinal = new GregorianCalendar(2022, 0, 31).getTime();
-
-		Page<DespesaEntity> page = despesaService.findByDataPagamento(dataInicial, dataFinal);
-
-		assertFalse(page.isEmpty());
-	}
-
-	@Test
-	@Order(7)
-	public void testFindByTipoDespesa() {
-		Page<DespesaEntity> page = despesaService.findByTipoDespesa(tipoDespesaId);
-
-		assertFalse(page.isEmpty());
-	}
-
-	@Test
-	@Order(8)
 	public void testDelete() {
 		despesaService.deleteById(idDespesa);
 		DespesaEntity entity = despesaService.findById(idDespesa);
