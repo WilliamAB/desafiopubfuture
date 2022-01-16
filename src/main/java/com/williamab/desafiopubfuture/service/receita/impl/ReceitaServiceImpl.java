@@ -1,8 +1,12 @@
 package com.williamab.desafiopubfuture.service.receita.impl;
 
+import java.util.Date;
+
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import com.williamab.desafiopubfuture.model.receita.ReceitaEntity;
+import com.williamab.desafiopubfuture.model.receita.TipoReceitaEntity;
 import com.williamab.desafiopubfuture.repository.receita.ReceitaRepository;
 import com.williamab.desafiopubfuture.service.impl.BasicServiceImpl;
 import com.williamab.desafiopubfuture.service.receita.ReceitaService;
@@ -15,5 +19,55 @@ import com.williamab.desafiopubfuture.service.receita.ReceitaService;
  */
 @Service
 public class ReceitaServiceImpl extends BasicServiceImpl<ReceitaEntity, ReceitaRepository> implements ReceitaService {
+
+	@Override
+	public Double getValorTotal() {
+		return getRepository().sumValorReceitas();
+	}
+
+	@Override
+	public Page<ReceitaEntity> findByDataRecebimento(Date dataInicial, Date dataFinal) {
+		return findByDataRecebimento(dataInicial, dataFinal, 1);
+	}
+
+	@Override
+	public Page<ReceitaEntity> findByDataRecebimento(Date dataInicial, Date dataFinal, int page) {
+		return findByDataRecebimento(dataInicial, dataFinal, page, 20);
+	}
+
+	@Override
+	public Page<ReceitaEntity> findByDataRecebimento(Date dataInicial, Date dataFinal, int page, int limit) {
+		if (dataInicial == null) {
+			throw new IllegalArgumentException("Data inicial deve ser informada!");
+		}
+
+		if (dataFinal == null) {
+			throw new IllegalArgumentException("Data final deve ser informada!");
+		}
+
+		if (dataInicial.compareTo(dataFinal) > 0) {
+			throw new IllegalArgumentException("Data final deve ser maior que a data inicial!");
+		}
+
+		return getRepository().findByDataRecebimentoBetween(dataInicial, dataFinal, createPageable(page, limit));
+	}
+
+	@Override
+	public Page<ReceitaEntity> findByTipoReceita(Long tipoReceitaId) {
+		return findByTipoReceita(tipoReceitaId, 1);
+	}
+
+	@Override
+	public Page<ReceitaEntity> findByTipoReceita(Long tipoReceitaId, int page) {
+		return findByTipoReceita(tipoReceitaId, page, 20);
+	}
+
+	@Override
+	public Page<ReceitaEntity> findByTipoReceita(Long tipoReceitaId, int page, int limit) {
+		TipoReceitaEntity tipoReceita = new TipoReceitaEntity();
+		tipoReceita.setId(tipoReceitaId);
+
+		return getRepository().findByTipoReceita(tipoReceita, createPageable(page, limit));
+	}
 
 }
