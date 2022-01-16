@@ -1,10 +1,14 @@
 package com.williamab.desafiopubfuture.service.receita;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -15,6 +19,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -58,6 +63,8 @@ public class ReceitaServiceTest {
 
 	// Dados do tipo de receita
 	private final String TIPO_RECEITA_DESCRICAO = "Tipo de receita Teste Service";
+
+	private Long tipoReceitaId = 0L;
 
 	// Dados da receita
 	private final Double RECEITA_VALOR = 12.34;
@@ -120,6 +127,7 @@ public class ReceitaServiceTest {
 		assertEquals(tipoReceita.getId(), receita.getTipoReceita().getId());
 
 		idReceita = receita.getId();
+		tipoReceitaId = tipoReceita.getId();
 	}
 
 	@Test
@@ -141,6 +149,52 @@ public class ReceitaServiceTest {
 
 	@Test
 	@Order(4)
+	public void testValorTotal() {
+		Double valorTotal = receitaService.getValorTotal();
+		assertTrue(valorTotal >= RECEITA_VALOR);
+	}
+
+	@Test
+	@Order(5)
+	public void testFindByDataRecebimentoInvalido() {
+
+		Date dataInicial = new GregorianCalendar(2022, 0, 31).getTime();
+		Date dataFinal = new GregorianCalendar(2022, 0, 1).getTime();
+
+		// Data inicial inválida
+		assertThrowsExactly(IllegalArgumentException.class,
+				() -> receitaService.findByDataRecebimento(null, dataFinal));
+
+		// Data final inválida
+		assertThrowsExactly(IllegalArgumentException.class,
+				() -> receitaService.findByDataRecebimento(dataInicial, null));
+
+		// Data inicial maior que data final
+		assertThrowsExactly(IllegalArgumentException.class,
+				() -> receitaService.findByDataRecebimento(dataInicial, dataFinal));
+	}
+
+	@Test
+	@Order(6)
+	public void testFindByDataPagamento() {
+		Date dataInicial = new GregorianCalendar(2022, 0, 1).getTime();
+		Date dataFinal = new GregorianCalendar(2022, 0, 31).getTime();
+
+		Page<ReceitaEntity> page = receitaService.findByDataRecebimento(dataInicial, dataFinal);
+
+		assertFalse(page.isEmpty());
+	}
+
+	@Test
+	@Order(7)
+	public void testFindByTipoDespesa() {
+		Page<ReceitaEntity> page = receitaService.findByTipoReceita(tipoReceitaId);
+
+		assertFalse(page.isEmpty());
+	}
+
+	@Test
+	@Order(8)
 	public void testDelete() {
 		receitaService.deleteById(idReceita);
 		ReceitaEntity entity = receitaService.findById(idReceita);

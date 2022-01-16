@@ -1,10 +1,12 @@
 package com.williamab.desafiopubfuture.repository.receita;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Optional;
 
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
@@ -16,6 +18,8 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -59,6 +63,8 @@ public class ReceitaRepositoryTest {
 
 	// Dados do tipo de receita
 	private final String TIPO_RECEITA_DESCRICAO = "Tipo de receita Teste";
+
+	private Long tipoReceitaId = 0L;
 
 	// Dados da receita
 	private final Double RECEITA_VALOR = 12.34;
@@ -121,6 +127,7 @@ public class ReceitaRepositoryTest {
 		assertEquals(tipoReceita.getId(), receita.getTipoReceita().getId());
 
 		idReceita = receita.getId();
+		tipoReceitaId = tipoReceita.getId();
 	}
 
 	@Test
@@ -146,6 +153,38 @@ public class ReceitaRepositoryTest {
 
 	@Test
 	@Order(4)
+	public void testSumValorReceitas() {
+		Double valorTotal = receitaRepository.sumValorReceitas();
+		assertTrue(valorTotal >= RECEITA_VALOR);
+	}
+
+	@Test
+	@Order(5)
+	public void testFindByDataRecebimentoBetween() {
+		Date dataInicial = new GregorianCalendar(2022, 0, 1).getTime();
+		Date dataFinal = new GregorianCalendar(2022, 0, 31).getTime();
+		PageRequest pageable = PageRequest.of(0, 20);
+
+		Page<ReceitaEntity> page = receitaRepository.findByDataRecebimentoBetween(dataInicial, dataFinal, pageable);
+
+		assertFalse(page.isEmpty());
+	}
+
+	@Test
+	@Order(6)
+	public void testFindByTipoReceita() {
+		PageRequest pageable = PageRequest.of(0, 20);
+
+		TipoReceitaEntity tipoReceita = new TipoReceitaEntity();
+		tipoReceita.setId(tipoReceitaId);
+
+		Page<ReceitaEntity> page = receitaRepository.findByTipoReceita(tipoReceita, pageable);
+
+		assertFalse(page.isEmpty());
+	}
+
+	@Test
+	@Order(7)
 	public void testDelete() {
 		receitaRepository.deleteById(idReceita);
 		Optional<ReceitaEntity> optional = receitaRepository.findById(idReceita);
