@@ -50,19 +50,6 @@ public class DespesaEntity extends BasicEntity {
 	public DespesaEntity() {
 	}
 
-	public DespesaEntity(Double valor, Date dataPagamento, TipoDespesaEntity tipoDespesa, ContaEntity conta) {
-		this(valor, dataPagamento, null, tipoDespesa, conta);
-	}
-
-	public DespesaEntity(Double valor, Date dataPagamento, Date dataPagamentoEsperado, TipoDespesaEntity tipoDespesa,
-			ContaEntity conta) {
-		this.valor = valor;
-		this.dataPagamento = dataPagamento;
-		this.dataPagamentoEsperado = dataPagamentoEsperado;
-		this.tipoDespesa = tipoDespesa;
-		this.conta = conta;
-	}
-
 	public Double getValor() {
 		return valor;
 	}

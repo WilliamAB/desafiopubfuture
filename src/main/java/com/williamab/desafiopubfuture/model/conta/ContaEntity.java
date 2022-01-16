@@ -31,16 +31,6 @@ public class ContaEntity extends BasicEntity {
 	public ContaEntity() {
 	}
 
-	public ContaEntity(TipoConta tipoConta, String instituicaoFinanceira) {
-		this(0.0, tipoConta, instituicaoFinanceira);
-	}
-
-	public ContaEntity(Double saldo, TipoConta tipoConta, String instituicaoFinanceira) {
-		this.saldo = saldo;
-		this.tipoConta = tipoConta;
-		this.instituicaoFinanceira = instituicaoFinanceira;
-	}
-
 	public Double getSaldo() {
 		return saldo;
 	}

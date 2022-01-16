@@ -51,6 +51,7 @@ public class ContaServiceTest {
 	private Long id = 0L;
 
 	private final TipoConta CONTA_TRANSF_TIPO_CONTA = TipoConta.CARTEIRA;
+	private final Double CONTA_TRANSF_SALDO = 0.0;
 
 	private Long contaTransfId = 0L;
 
@@ -81,11 +82,14 @@ public class ContaServiceTest {
 		id = entity.getId();
 
 		// Conta auxiliar para o teste de transferência de saldo
-		ContaEntity contaAux = new ContaEntity(CONTA_TRANSF_TIPO_CONTA, null);
+		ContaEntity contaAux = new ContaEntity();
+		contaAux.setSaldo(CONTA_TRANSF_SALDO);
+		contaAux.setTipoConta(CONTA_TRANSF_TIPO_CONTA);
 		contaAux = service.save(contaAux);
+
 		assertNotNull(contaAux);
 		assertNotNull(contaAux.getId());
-		assertEquals(0.0, contaAux.getSaldo());
+		assertEquals(CONTA_TRANSF_SALDO, contaAux.getSaldo());
 		assertEquals(CONTA_TRANSF_TIPO_CONTA, contaAux.getTipoConta());
 
 		contaTransfId = contaAux.getId();

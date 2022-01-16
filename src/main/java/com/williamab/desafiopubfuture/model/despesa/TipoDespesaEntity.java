@@ -22,10 +22,6 @@ public class TipoDespesaEntity extends BasicEntity {
 	public TipoDespesaEntity() {
 	}
 
-	public TipoDespesaEntity(String descricao) {
-		this.descricao = descricao;
-	}
-
 	public String getDescricao() {
 		return descricao;
 	}

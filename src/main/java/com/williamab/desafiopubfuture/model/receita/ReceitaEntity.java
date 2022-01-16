@@ -53,21 +53,6 @@ public class ReceitaEntity extends BasicEntity {
 	public ReceitaEntity() {
 	}
 
-	public ReceitaEntity(Double valor, Date dataRecebimento, String descricao, ContaEntity conta,
-			TipoReceitaEntity tipoReceita) {
-		this(valor, dataRecebimento, null, descricao, conta, tipoReceita);
-	}
-
-	public ReceitaEntity(Double valor, Date dataRecebimento, Date dataRecebimentoEsperado, String descricao,
-			ContaEntity conta, TipoReceitaEntity tipoReceita) {
-		this.valor = valor;
-		this.dataRecebimento = dataRecebimento;
-		this.dataRecebimentoEsperado = dataRecebimentoEsperado;
-		this.descricao = descricao;
-		this.conta = conta;
-		this.tipoReceita = tipoReceita;
-	}
-
 	public Double getValor() {
 		return valor;
 	}

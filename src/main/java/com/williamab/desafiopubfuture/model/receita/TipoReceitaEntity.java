@@ -22,10 +22,6 @@ public class TipoReceitaEntity extends BasicEntity {
 	public TipoReceitaEntity() {
 	}
 
-	public TipoReceitaEntity(String descricao) {
-		this.descricao = descricao;
-	}
-
 	public String getDescricao() {
 		return descricao;
 	}
