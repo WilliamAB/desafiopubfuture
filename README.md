@@ -27,12 +27,10 @@ A documentação completa com as URLs específicas, parâmetros e métodos (GET,
 	 - Dialeto do banco de dados (conforme banco instalado): `spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect`
  - Clonar o projeto:
 `git clone https://github.com/WilliamAB/desafiopubfuture.git`
- - Instalar as dependências do projeto executando o seguinte comando dentro do diretório clonado:
- `mvnw install`
- - Executar a aplicação a partir do seguinte comando, dentro do mesmo diretório:
- `java -jar target/desafiopubfuture-0.0.1-SNAPSHOT.jar`;
+ - Executar a aplicação a partir do seguinte comando dentro do diretório clonado:
+ `mvnw spring-boot:run`
  - Acesse [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html) para consultar a documentação da API e poder realizar os testes de requisições.
-
+ 
 ## Utilizando o Postman
 O Postman é o ideal para testar as requisições da API.
 
