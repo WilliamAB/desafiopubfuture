@@ -48,7 +48,7 @@ public class DespesaController
 
 		Double valorTotal = getService().getValorTotal();
 
-		response.setData(String.format("Valor total das despesas: R$ %.2f", valorTotal));
+		response.setData("Valor total das despesas: R$ %.2f".formatted(valorTotal));
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}

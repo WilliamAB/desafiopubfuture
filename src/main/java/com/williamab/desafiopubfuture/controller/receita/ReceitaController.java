@@ -48,7 +48,7 @@ public class ReceitaController
 
 		Double valorTotal = getService().getValorTotal();
 
-		response.setData(String.format("Valor total das receitas: R$ %.2f", valorTotal));
+		response.setData("Valor total das receitas: R$ %.2f".formatted(valorTotal));
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}

@@ -86,7 +86,7 @@ public class ContaController extends BasicController<ContaEntity, ContaDTO, Cont
 
 		Double saldoTotal = getService().getSaldoTotal();
 
-		response.setData(String.format("Saldo total das contas: R$ %.2f", saldoTotal));
+		response.setData("Saldo total das contas: R$ %.2f".formatted(saldoTotal));
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}

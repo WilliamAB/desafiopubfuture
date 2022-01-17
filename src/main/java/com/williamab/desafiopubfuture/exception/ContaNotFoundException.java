@@ -14,7 +14,7 @@ public class ContaNotFoundException extends EntityNotFoundException {
 	private static final long serialVersionUID = 1009486194051137687L;
 
 	public ContaNotFoundException(Long id) {
-		super(String.format("Conta [ID: %d] não encontrada!", id));
+		super("Conta [ID: %d] não encontrada!".formatted(id));
 	}
 
 }
